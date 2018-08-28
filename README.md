@@ -1,0 +1,10 @@
+# Tooling from the RHC4TP Team
+This repository hosts a number of tools to make life easier... for partners as well as team members, when performing certain tasks. Please note that these tools are *not* supported in any way by Redhat or the RHC4TP Team.
+
+Such tasks include:
+* Preparing hosts for the installation of OpenShift Container Platform
+* Standing up base infrastructure in the cloud (notably for running OCP in AWS, Azure or GCP)
+* Interacting with the RHC API, for building, publishing and maintaining container images in RHCC
+* Additional tasks as tooling is developed (tools written in bash, python, go, etc including Ansible playbooks)
+
+All RHC4TP team members (and partners) are welcome to contribute any scripting/tooling written to accomplish tedious (or even complex) tasks, with the only requisites being that scripts are tested and sanitized of sensitive data before being made public (no AWS keys, resource identifiers, IAM account names, passwords, etc).
