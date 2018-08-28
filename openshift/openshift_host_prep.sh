@@ -81,3 +81,7 @@ if [[ $? != 0 ]]; then
 fi
 systemctl enable docker
 
+echo "$(basename $0) setup concluded."
+echo ""
+echo "A host reboot is recommended, to allow any kernel updates to take effect."
+exit 0
