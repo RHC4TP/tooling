@@ -4,7 +4,11 @@ class API
   #Initial call to API
   def self.response(project_id)
     response =  HTTParty.get("#{BASE_URI + project_id}").parsed_response
-    print_response(response)
+    if response["code"] == 404
+      puts "\nProject not found..."
+    else
+      print_response(response)
+    end
   end
 
   #Builds project

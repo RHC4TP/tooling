@@ -19,13 +19,13 @@ You can find out if ruby is installed by running:  `which ruby`. If you have rub
 Get project info:
 
 ```sh
-./rhc_cli -id <project_id>
+./rhc_cli -i <project_id>
 ```
 
 Trigger manual build:
 
 ```sh
-./rhc_cli -id <project_id> -t <build_tag>
+./rhc_cli -i <project_id> -t <build_tag>
 ```
 
 ### To Do
