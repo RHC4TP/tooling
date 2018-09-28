@@ -15,7 +15,8 @@ class API
       body: { tag: "#{tag}"}.to_json
     )
 
-    puts "#{response["status"]} : #{response["message"]}"
+    puts "Status: #{response["status"]}"
+    puts "Message: #{response["message"]}"
     # puts response.parsed_response
   end
 

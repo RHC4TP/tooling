@@ -2,7 +2,6 @@
 require_relative './rhc_api.rb'
 require 'httparty'
 require 'optparse'
-require 'json'
 require 'tty-spinner'
 
 options = {}
