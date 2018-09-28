@@ -25,12 +25,12 @@ Get project info:
 Trigger manual build:
 
 ```sh
-./rhc_cli -id <project_id> -b <build_tag>
+./rhc_cli -id <project_id> -t <build_tag>
 ```
 
 ### To Do
 
 * Add an error when the response times out.
 * Check if API is down.
-* Dockerize script
-* Add tests and validations
+* Dockerize script.
+* Add tests and validations.
