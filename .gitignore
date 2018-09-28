@@ -1,0 +1,4 @@
+#rhc-manager project
+/rhc-manager/.DS_Store
+/rhc-manager/.env
+/rhc-manager/Gemfile.lock
