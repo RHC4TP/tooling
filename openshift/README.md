@@ -17,7 +17,7 @@ The following resources are required to run the script:
 * An empty/available block storage device for each host (for docker storage)
 * All master hosts will need passwordless SSH access to all node hosts (covered in the [host preparation](https://docs.openshift.com/container-platform/latest/install/host_preparation.html#ensuring-host-access) section of the official docs)
 
-You may also need to update the `MAJOR` and `MINOR` versions of OpenShift (within the script) to match the version you are installing. These variables are set by default to the latest available version of OpenShift Container Platform (currently 3.10).
+You may also need to update the `MAJOR` and `MINOR` versions of OpenShift (within the script) to match the version you are installing. These variables are set by default to the latest available version of OpenShift Container Platform (currently 3.11).
 
 #### Installation
 Just copy the script to each host member of the OpenShift cluster installation. It must be run with root permissions, and can be called with no arguments as shown:
