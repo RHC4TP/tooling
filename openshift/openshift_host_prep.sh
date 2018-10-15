@@ -19,7 +19,7 @@
 
 # -- Environment Variables -- #
 readonly OCP_MAJOR_VER=3 # Current Major Verion of OCP
-readonly OCP_MINOR_VER=10 # Current Minor Version of OCP
+readonly OCP_MINOR_VER=11 # Current Minor Version of OCP
 
 # -- Check Root Privileges -- #
 if [[ $(whoami) != root ]]; then
