@@ -15,7 +15,7 @@ Just pull the container and run the commands from within the container session.
 #### Steps
 
 1. `docker pull quay.io/gfranchini/rhc-manager`
-2. `docker run -it --rm rhc-manager`
+2. `docker run -it --rm quay.io/gfranchini/rhc-manager`
 3. Run commands to get either project info or build a new project.
 
 **Get Project Info:**

@@ -23,7 +23,7 @@ if (options[:id] && ARGV[0]) && (options[:tag] && ARGV[1])
   API.build(ARGV[0], ARGV[1])
 elsif options[:id] && ARGV[0]
   if options[:tag] && ARGV[1] == nil
-    puts "Error: Please provide a tag"
+    puts "Error: Please provide a build tag ..."
   else
     spinner = TTY::Spinner.new("[:spinner]Gathering data ...", format: :classic)
     spinner.run('Done!') do
@@ -31,10 +31,10 @@ elsif options[:id] && ARGV[0]
     end
   end
 else
-  puts "There has been an error..."
+  puts "Please provide a project ID ..."
 end
 
 ##Print out input for testing (Uncomment if you want to test)
-# puts "\nArguments used:"
-# p options
-# p ARGV
+puts "\nArguments used:"
+p options
+p ARGV
