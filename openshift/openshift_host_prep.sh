@@ -30,25 +30,33 @@ fi
 # -- Subscription Manager -- #
 subscription-manager register
 SM_EXIT=$? # subscription-manager exit code
+
 if [[ ${SM_EXIT} != 0 ]] && [[ ${SM_EXIT} != 64 ]]; then # if not either successfully registered (0) or already registered (64)
 	echo "Failed to register. Exiting..."
 	exit 2
 fi
+
 if [[ -z $(subscription-manager list --consumed | grep '^Subscription Name: \+Red Hat OpenShift.*') ]]; then
 	POOL=$(subscription-manager list --available | grep -A 10 OpenShift | grep Pool | tail -1 | awk -F ':' '{ print $2 }' | sed 's/^\s\+//') # Get available subs | show 10 lines after each match of OpenShift | fetch lines with Pool ID | show only 1 line | print second field after the ':' (pool id number) | strip leading whitespace
 	subscription-manager attach --pool=${POOL}
+fi
+
+subscription-manager repos --disable=*
+
+if [[ "${OCP_MAJOR_VER}${OCP_MINOR_VER}" -lt "311" ]]; then # No support for FP arithmetic in bash, so we concatenate the major & minor version strings together
 	subscription-manager repos --enable=rhel-7-server{,-optional,-extras,-ose-$OCP_MAJOR_VER.$OCP_MINOR_VER,-ansible-2.4}-rpms --enable=rhel-7-fast-datapath-rpms
-	OLD_REPOS=$(subscription-manager repos --list-enabled | grep '3\.\?' | grep -v "${OCP_MAJOR_VER}\.${OCP_MINOR_VER}" | grep ID | awk -F ':' '{print $2}' | sed 's/^\s\+//') # Assemble list of outdated OSE repos
-	if [[ -n $OLD_REPOS ]]; then # loop to disable outdated OSE repos
-		for i in $OLD_REPOS; do
-		subscription-manager repos --disable=$i
-		done
-	fi
+else
+	subscription-manager repos --enable=rhel-7-server{,-optional,-extras,-ose-$OCP_MAJOR_VER.$OCP_MINOR_VER,-ansible-2.6}-rpms --enable=rhel-7-fast-datapath-rpms
 fi
 
 # -- Package Installation & Updates -- #
 yum update -y
 yum install -y docker git wget vim net-tools iptables-services bind-utils httpd-tools openshift-ansible
+
+if [[ ! -e /usr/bin/docker ]]; then
+	echo "ERROR: /usr/bin/docker does not exist. Exiting..."
+	exit 16
+fi
 
 # -- Docker Daemon Config -- #
 if [[ -a /etc/sysconfig/docker ]] && [[ -z $(grep insecure /etc/sysconfig/docker) ]]; then
@@ -59,19 +67,21 @@ if [[ -a /etc/sysconfig/docker ]] && [[ -z $(grep insecure /etc/sysconfig/docker
 fi
 
 # -- Setup Docker Storage -- #
-read -p "Please provide the path to your docker storage device [/dev/vdb]: " DOCKER_STORAGE_DEVICE
-DOCKER_STORAGE_DEVICE=${DOCKER_STORAGE_DEVICE:-/dev/vdb}
+read -p "Please provide the path to your docker storage device [/dev/xvdf]: " DOCKER_STORAGE_DEVICE
+DOCKER_STORAGE_DEVICE=${DOCKER_STORAGE_DEVICE:-/dev/xvdf}
 echo "WARNING! All data on device ${DOCKER_STORAGE_DEVICE} will be destroyed!"
 read -p "Are you sure you want to continue? [y/N]: " BRICK_ME
+
 if [[ ${BRICK_ME} != [Yy] ]] && [[ ${BRICK_ME} != [Yy][Ee][Ss] ]]; then
 	echo "You've chosen not to destroy data on ${DOCKER_STORAGE_DEVICE}. Exiting..."
 	exit 4
 fi
+
 systemctl stop docker
 rm -rf /var/lib/docker
 
 # Starting with 3.10, the "/dev/" path prefix in /etc/sysconfig/docker-storage-setup is implied
-if [[ "${OCP_MAJOR_VER}${OCP_MINOR_VER}" -lt "310" ]]; then # No support for FP arithmetic in bash, so we concatenate the major/minor version strings, and run the following code only for versions older than 310
+if [[ "${OCP_MAJOR_VER}${OCP_MINOR_VER}" -lt "310" ]]; then 
 	echo "DEVS=${DOCKER_STORAGE_DEVICE}" > /etc/sysconfig/docker-storage-setup
 	echo "VG=docker-vg" >> /etc/sysconfig/docker-storage-setup
 else
@@ -79,6 +89,7 @@ else
 	echo "DEVS=${DOCKER_STORAGE_DEVICE}" | sed -e 's,/dev/,,' >> /etc/sysconfig/docker-storage-setup # for newer versions of OCP, strip the '/dev/' prefix when writing to /etc/sysconfig/docker-storage-setup
 	echo "VG=docker-vg" >> /etc/sysconfig/docker-storage-setup
 fi
+
 rm -rf /var/lib/docker
 lvremove docker-vg -f
 vgremove docker-vg
@@ -92,6 +103,7 @@ if [[ $? != 0 ]]; then
 	echo "Docker failed to start. Exiting..."
 	exit 8
 fi
+
 systemctl enable docker
 
 echo "$(basename $0) setup concluded."
