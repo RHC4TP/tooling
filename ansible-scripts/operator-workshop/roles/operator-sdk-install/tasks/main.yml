@@ -1,2 +1,19 @@
 ---
 # tasks file for operator-sdk
+- name: Create operator-sdk directory
+  file:
+    path: "{{ ansible_user_dir }}/go/src/github.com/operator-framework"
+    state: directory
+
+- name: Clone Operator-SDK
+  git:
+    repo: https://github.com/operator-framework/operator-sdk.git
+    dest: "{{ ansible_user_dir }}/go/src/github.com/operator-framework/operator-sdk"
+
+- name: Make the Operator-SDK (bash)
+  shell: "source {{ ansible_user_dir }}/.bashrc && cd {{ ansible_user_dir }}/go/src/github.com/operator-framework/operator-sdk && make dep && make install"
+  when: ansible_facts['user_shell'] == "/bin/bash"
+
+- name: Make the Operator-SDK (zshell)
+  shell: "source {{ ansible_user_dir }}/.bashrc && cd {{ ansible_user_dir }}/go/src/github.com/operator-framework/operator-sdk && make dep && make install"
+  when: ansible_facts['user_shell'] == "/bin/zsh"

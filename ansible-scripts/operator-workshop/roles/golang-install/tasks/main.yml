@@ -41,5 +41,8 @@
     insertafter: EOF
   when: ansible_facts['user_shell'] == "/bin/zsh"
 
+- name: Install dep
+  shell: "curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh"
+
 - name: Display post install message
   debug: msg={{ post_install }}

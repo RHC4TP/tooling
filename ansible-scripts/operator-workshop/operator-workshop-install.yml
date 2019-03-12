@@ -2,4 +2,5 @@
 - hosts: localhost
   roles:
     - golang-install
-    - minishift-install
+    - operator-sdk-install
+    # - minishift-install
