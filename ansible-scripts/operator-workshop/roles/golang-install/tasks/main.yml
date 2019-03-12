@@ -1,0 +1,44 @@
+---
+# tasks file for golang
+
+- name: Install Golang
+  dnf:
+    name: golang
+    state: latest
+    update_cache: yes
+
+- name: Create go dirs and subdirs
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+    mode: 0775
+  with_items:
+    - "{{ ansible_user_dir }}/go"
+    - "{{ ansible_user_dir }}/go/bin"
+    - "{{ ansible_user_dir }}/go/src"
+    - "{{ ansible_user_dir }}/go/pkg"
+
+- name: Export to .bashrc
+  blockinfile:
+    path: "{{ ansible_user_dir }}/.bashrc"
+    block: |
+      export GOPATH=$HOME/go
+      export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
+    backup: true
+    insertafter: EOF
+  when: ansible_facts['user_shell'] == "/bin/bash"
+
+- name: Export to .zshrc
+  blockinfile:
+    path: "{{ ansible_user_dir }}/.bashrc"
+    block: |
+      export GOPATH=$HOME/go
+      export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
+    backup: true
+    insertafter: EOF
+  when: ansible_facts['user_shell'] == "/bin/zsh"
+
+- name: Display post install message
+  debug: msg={{ post_install }}

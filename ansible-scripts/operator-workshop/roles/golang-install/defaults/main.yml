@@ -1,0 +1,4 @@
+---
+# defaults file for golang
+
+post_install: Don't forget to reload your your shell with source ~/.bashrc or source ~/.zshrc
