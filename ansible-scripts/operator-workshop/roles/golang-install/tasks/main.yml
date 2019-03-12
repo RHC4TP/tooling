@@ -2,6 +2,7 @@
 # tasks file for golang
 
 - name: Install Golang
+  become: true
   dnf:
     name: golang
     state: latest

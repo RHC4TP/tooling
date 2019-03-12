@@ -1,2 +1,66 @@
 ---
 # tasks file for minishift
+
+- name: Install Virtualization
+  become: true
+  dnf:
+    name: '@virtualization'
+    state: latest
+    update_cache: yes
+
+- name: Install libvirt
+  become: true
+  dnf:
+    name: libvirt
+    state: latest
+
+- name: Install qemu-kvm
+  become: true
+  dnf:
+    name: qemu-kvm
+    state: latest
+
+- name: Create the libvirt group
+  become: true
+  group:
+    name: libvirt
+    state: present
+
+- name: "Adding user {{ ansible_user_id }} to the libvirt group"
+  become: true
+  user:
+    name: "{{ ansible_user_id }}"
+    groups: libvirt
+    append: yes
+
+- name: Install the KVM driver binary
+  get_url:
+    url: https://github.com/dhiltgen/docker-machine-kvm/releases/download/v0.10.0/docker-machine-driver-kvm-centos7
+    dest: /usr/local/bin/docker-machine-driver-kvm
+    mode: 0110
+
+- name: Start libvirt and enable it
+  become: true
+  service:
+    name: libvirtd
+    state: started
+    enabled: yes
+
+- name: Create a binary directory for your minishift executable
+  file:
+    path: "{{ ansible_user_dir}}/bin"
+    state: directory
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+    mode: 0770
+
+- name: Download Minishift from releases page
+  become: true
+  get_url:
+    url: https://github.com/minishift/minishift/releases/download/v1.32.0/minishift-1.32.0-linux-amd64.tgz
+    dest: "{{ ansible_user_dir}}"
+
+- name: Extract Minishift payload
+  unarchive:
+    src: "{{ ansible_user_dir }}/minishift-1.32.0-linux-amd64.tgz"
+    dest: "{{ ansible_user_dir }}/bin"
