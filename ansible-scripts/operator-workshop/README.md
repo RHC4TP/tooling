@@ -4,7 +4,7 @@ This repository installs all of the prerequisite software needed to build an Ope
 * Golang
 * Dep
 * MiniShift (along with virtualization dependencies)
-* oc client (to be completed)
+* oc client
 * Operator-SDK
 * Docker
 

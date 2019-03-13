@@ -72,4 +72,4 @@
     dest: "{{ ansible_user_dir }}/bin/minishift"
     owner: "{{ ansible_user_id }}"
     group: "{{ ansible_user_id }}"
-    mode: 0740
+    mode: 0770
