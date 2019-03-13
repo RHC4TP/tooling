@@ -4,12 +4,12 @@ This repository installs all of the prerequisite software needed to start develo
 
 Software installed:
 
-* Golang
-* Dep
-* MiniShift
-* OpenShift client
-* Operator-SDK
-* Docker
+* [Golang](https://golang.org/doc/install) v1.11.5
+* [Dep](https://github.com/golang/dep) v0.5.1
+* [MiniShift](https://docs.okd.io/latest/minishift/getting-started/installing.html) v1.32
+* [OpenShift client](https://docs.okd.io/latest/cli_reference/get_started_cli.html) v3.11.0
+* [Operator-SDK](https://github.com/operator-framework/operator-sdk) v0.5.0
+* [Docker](https://docs.docker.com/install/) v18.09.3
 
 > This has only been tested on a fresh install of Fedora 29.
 
