@@ -1,2 +1,20 @@
 ---
 # tasks file for docker-install
+
+- name: Install dnf-plugins-core
+  become: yes
+  dnf:
+    name: dnf-plugins-core
+    state: latest
+
+- name: Set up the Docker CE stable repository
+  become: yes
+  shell: "dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo"
+
+- name: Install Docker
+  become: yes
+  dnf:
+    name: docker-ce, docker-ce-cli, containerd.io
+    state: present
+
+

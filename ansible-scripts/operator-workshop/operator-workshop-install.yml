@@ -1,6 +1,8 @@
 ---
 - hosts: localhost
+  become: no
   roles:
     - golang-install
     - operator-sdk-install
-    # - minishift-install
+    - minishift-install
+    - docker-install
