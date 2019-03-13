@@ -2,49 +2,50 @@
 # tasks file for minishift
 
 - name: Install Virtualization
-  become: true
+  become: yes
   dnf:
     name: '@virtualization'
     state: latest
     update_cache: yes
 
 - name: Install libvirt
-  become: true
+  become: yes
   dnf:
     name: libvirt
     state: latest
 
 - name: Install qemu-kvm
-  become: true
+  become: yes
   dnf:
     name: qemu-kvm
     state: latest
 
 - name: Create the libvirt group
-  become: true
+  become: yes
   group:
     name: libvirt
     state: present
 
 - name: "Adding user {{ ansible_user_id }} to the libvirt group"
-  become: true
+  become: yes
   user:
     name: "{{ ansible_user_id }}"
     groups: libvirt
     append: yes
 
 - name: Install the KVM driver binary
+  become: yes
   get_url:
     url: https://github.com/dhiltgen/docker-machine-kvm/releases/download/v0.10.0/docker-machine-driver-kvm-centos7
     dest: /usr/local/bin/docker-machine-driver-kvm
     mode: 0110
 
-- name: Start libvirt and enable it
-  become: true
-  service:
-    name: libvirtd
-    state: started
-    enabled: yes
+# - name: Start and enable libvirt
+#   become: yes
+#   service:
+#     name: libvirtd
+#     state: started
+#     enabled: yes
 
 - name: Create a binary directory for your minishift executable
   file:
@@ -55,12 +56,20 @@
     mode: 0770
 
 - name: Download Minishift from releases page
-  become: true
+  become: yes
   get_url:
     url: https://github.com/minishift/minishift/releases/download/v1.32.0/minishift-1.32.0-linux-amd64.tgz
-    dest: "{{ ansible_user_dir}}"
+    dest: /tmp
 
 - name: Extract Minishift payload
   unarchive:
-    src: "{{ ansible_user_dir }}/minishift-1.32.0-linux-amd64.tgz"
+    src: "/tmp/minishift-1.32.0-linux-amd64.tgz"
     dest: "{{ ansible_user_dir }}/bin"
+
+- name: Copy minishift binary to "{{ ansible_user_dir }}/bin"
+  copy:
+    src: "{{ ansible_user_dir }}/bin/minishift-1.32.0-linux-amd64/minishift"
+    dest: "{{ ansible_user_dir }}/bin/minishift"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+    mode: 0740

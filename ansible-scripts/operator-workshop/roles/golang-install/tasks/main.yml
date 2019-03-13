@@ -2,7 +2,7 @@
 # tasks file for golang
 
 - name: Install Golang
-  become: true
+  become: yes
   dnf:
     name: golang
     state: latest
@@ -27,7 +27,7 @@
     block: |
       export GOPATH=$HOME/go
       export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
-    backup: true
+    backup: yes
     insertafter: EOF
   when: ansible_facts['user_shell'] == "/bin/bash"
 
@@ -37,7 +37,7 @@
     block: |
       export GOPATH=$HOME/go
       export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
-    backup: true
+    backup: yes
     insertafter: EOF
   when: ansible_facts['user_shell'] == "/bin/zsh"
 

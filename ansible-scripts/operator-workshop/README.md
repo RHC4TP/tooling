@@ -4,8 +4,9 @@ This repository installs all of the prerequisite software needed to build an Ope
 * Golang
 * Dep
 * MiniShift (along with virtualization dependencies)
+* oc client (to be completed)
 * Operator-SDK
-* Docker (to be completed)
+* Docker
 
 # Useage
 
@@ -14,7 +15,7 @@ Ansible must be installed on your local machine. Once installed, just clone this
 **IMPORTANT:** do not run playbook as `root` user.
 
 ```bash
-$ ansible-playbook operator-workshop-install.yml
+$ ansible-playbook --ask-sudo-pass operator-workshop-install.yml
 ```
 
 Once successfully complete, open a new terminal session or reload your shell:
@@ -33,7 +34,7 @@ Please note that Ansible will still keep your old .bashrc or .zshrc file backed 
 
 Check that Go is installed correctly by setting up a workspace and building a simple program, as follows.
 
-```
+```bash
 package main
 
 import "fmt"
@@ -45,14 +46,14 @@ func main() {
 
 Then build it with the go tool:
 
-```
+```bash
 $ cd $HOME/go/src/hello
 $ go build
 ```
 
 The command above will build an executable named hello in the directory alongside your source code. Execute it to see the greeting:
 
-```
+```bash
 $ ./hello
 hello, world
 ```
@@ -64,5 +65,4 @@ You can run go install to install the binary into your workspace's bin directory
 
 
 ### To Do
-* Reload shell when Ansible script is complete
 * Add more conditions for different OS.
