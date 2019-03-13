@@ -17,7 +17,7 @@ Software installed:
 
 Ansible must be installed on your local machine for this to work. Follow the steps below to get started:
 
-> **IMPORTANT:** do **not** run playbook as `root` user.
+> **IMPORTANT:** do **not** run playbook as `root` user. This installation will configure everything for the {{ ansible_user_id }} running the playbook (this is your user account!).
 
 ```bash
 $ git clone https://github.com/RHC4TP/tooling.git
