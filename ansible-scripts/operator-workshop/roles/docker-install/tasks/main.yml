@@ -17,4 +17,19 @@
     name: docker-ce, docker-ce-cli, containerd.io
     state: present
 
+- name: Adding "{{ ansible_user_id }}" to docker group
+  become: yes
+  user:
+    name: "{{ ansible_user_id }}"
+    groups: docker
+    append: yes
+
+- name: Start and enable docker
+  become: yes
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+
 
