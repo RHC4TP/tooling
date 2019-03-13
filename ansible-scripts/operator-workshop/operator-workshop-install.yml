@@ -6,3 +6,4 @@
     - operator-sdk-install
     - minishift-install
     - docker-install
+    - openshift-client-install
