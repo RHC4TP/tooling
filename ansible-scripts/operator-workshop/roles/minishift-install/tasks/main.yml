@@ -40,12 +40,12 @@
     dest: /usr/local/bin/docker-machine-driver-kvm
     mode: 0110
 
-# - name: Start and enable libvirt
-#   become: yes
-#   service:
-#     name: libvirtd
-#     state: started
-#     enabled: yes
+- name: Start and enable libvirt
+  become: yes
+  service:
+    name: libvirtd
+    state: started
+    enabled: yes
 
 - name: Create a binary directory for your minishift executable
   file:
